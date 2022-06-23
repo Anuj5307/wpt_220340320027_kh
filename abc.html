@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <script>
+            src="https://code.jquery.com/jquery3-6.0.js"
+        </script>
+<script>
+$(()=>{
+
+    $("# book").blur(()=>{
+        let y=$("# book").val();
+        let ajaxparams={
+            data:(x,y),
+            url:"http:localhost:1000/getbook",
+            type:'get',
+            datatype:"json",
+            sucess:(output)=>{
+                if(output.bookidfoundstatus){
+                    $("# msg").text("book detail found");
+                    $("# bookn").val("output.bookdetails.bookname");
+                    document.queryselector("#bookn").value=output.bookdetails.bookname;
+                    $("#prc").val(output.bookdetails.price);
+                }
+                else{
+                    $("# msg").text("book detail not found");
+                    $("# bookn").val("");
+                    $("# prc").val("");
+                }
+            },
+            error:(error)=>{console.log("fail"+fail)}
+
+        };
+        $.ajax(ajaxparams);
+
+    });
+    $("# update").click(()=>{
+        let input={bookid:$("#book").val(), bookname:$("bookn").val(),price:$("#prc").val()};
+        let ajaxparams={
+            data:(input),
+            url:"http:localhost:1000/updatebook",
+            type:'get',
+            datatype:"json",
+            sucess:(output)=>{
+                if(output){
+                    $("# msg").text("update succesfully");
+                }
+                else{
+                    $("# msg").text("could not update succesfully");
+                }
+                
+                $("#bookn").val("");
+                $("#prc").val("");
+            },
+            error:(mistake)=>{console.log("error"+mistake);}
+        };
+        
+
+    })
+
+});
+</script>
+</head>
+<body>
+    <input type="text" id="book" placeholder="book id"/>
+    <span id="msg">What happened to book added or not</span>
+    <br/><Br/>
+    <input   type="text" id="bookn" placeholder="book name"/>
+    <Br/>
+    <br/>
+    <input type="text" id="prc" placeholder="price"/>
+    <Br/><br/>
+    <button id="bookid">update book</button> 
+</body>
+
+</html>
